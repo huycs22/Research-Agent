@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>PaperQA · Research agent</title>
+    <link rel="stylesheet" href="/app.css?v=6" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand-row">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32"><path d="M8 6.5h11a5 5 0 0 1 5 5v2a5 5 0 0 1-5 5h-6v7H8v-19Z"/><path class="brand-cut" d="M13 11h6a1.5 1.5 0 0 1 0 3h-6v-3Z"/></svg>
+          </div>
+          <div><strong>PaperQA</strong><span>Research agent</span></div>
+          <button class="icon-button sidebar-collapse" id="sidebar-collapse" aria-label="Collapse sidebar" title="Collapse sidebar">
+            <svg viewBox="0 0 24 24"><path d="m14 7-5 5 5 5"/></svg>
+          </button>
+        </div>
+
+        <button class="new-task" id="new-task">
+          <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+          New research
+          <kbd>Ctrl K</kbd>
+        </button>
+
+        <nav class="nav-block" aria-label="Workspace">
+          <p class="eyebrow">Workspace</p>
+          <button class="nav-item active" id="agent-nav">
+            <svg viewBox="0 0 24 24"><path d="M4 6h16v12H4zM8 10h8M8 14h5"/></svg>
+            Agent
+            <span class="nav-dot"></span>
+          </button>
+          <button class="nav-item" id="library-nav">
+            <svg viewBox="0 0 24 24"><path d="M5 4h4v16H5zM10 4h4v16h-4zM15 6h4v14h-4z"/></svg>
+            Library
+            <span class="count" id="document-count">0</span>
+          </button>
+        </nav>
+
+        <section class="history-block">
+          <div class="section-label"><span>Recent</span><button class="tiny-button" title="Refresh" id="refresh-history">↻</button></div>
+          <div id="history-list" class="history-list">
+            <div class="history-empty">Your conversations will appear here.</div>
+          </div>
+        </section>
+
+        <div class="sidebar-footer">
+          <div class="provider-line"><span class="status-dot" id="cloudflare-dot"></span><span>Cloudflare</span><small id="cloudflare-label">Checking…</small></div>
+        </div>
+      </aside>
+
+      <div class="panel-resizer panel-resizer-left" id="sidebar-resizer" role="separator" tabindex="0" aria-label="Resize navigation panel" aria-controls="sidebar" aria-orientation="vertical" aria-valuemin="180" aria-valuemax="420" aria-valuenow="244" title="Drag to resize · double-click to reset"></div>
+
+      <main class="main-panel">
+        <header class="topbar">
+          <div class="breadcrumb"><button class="icon-button mobile-menu-button" id="mobile-menu" title="Open navigation" aria-label="Open navigation"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button><span id="workspace-breadcrumb">Local workspace</span><svg viewBox="0 0 20 20"><path d="m8 5 5 5-5 5"/></svg><strong id="conversation-title">New research</strong></div>
+          <div class="top-actions">
+            <span class="privacy-badge" id="workspace-badge" title="Papers stay in this workspace; questions and excerpts are sent to the selected model providers"><span></span>Local workspace</span>
+            <button class="icon-button" id="settings-toggle" title="Run settings" aria-label="Run settings">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.8 1.8 0 0 0 .36 2l.06.06-2.12 2.12-.06-.06a1.8 1.8 0 0 0-2-.36 1.8 1.8 0 0 0-1.09 1.65v.09h-3v-.09A1.8 1.8 0 0 0 10.4 18.8a1.8 1.8 0 0 0-2 .36l-.06.06-2.12-2.12.06-.06a1.8 1.8 0 0 0 .36-2A1.8 1.8 0 0 0 5 14H5v-3h.09A1.8 1.8 0 0 0 6.7 9.9a1.8 1.8 0 0 0-.36-2l-.06-.06 2.12-2.12.06.06a1.8 1.8 0 0 0 2 .36A1.8 1.8 0 0 0 11.5 4.5V4.4h3v.09a1.8 1.8 0 0 0 1.09 1.65 1.8 1.8 0 0 0 2-.36l.06-.06 2.12 2.12-.06.06a1.8 1.8 0 0 0-.36 2A1.8 1.8 0 0 0 21 11h.09v3H21A1.8 1.8 0 0 0 19.4 15Z"/></svg>
+            </button>
+          </div>
+        </header>
+
+        <div class="conversation" id="conversation">
+          <section class="welcome" id="welcome">
+            <div class="welcome-orbit">
+              <div class="orbit-ring"></div>
+              <div class="agent-glyph"><svg viewBox="0 0 40 40"><path d="M12 9h13a7 7 0 0 1 7 7v1a7 7 0 0 1-7 7h-7v8h-6V9Z"/><path class="glyph-cut" d="M18 15h7a2 2 0 0 1 0 4h-7v-4Z"/></svg></div>
+            </div>
+            <p class="eyebrow accent">PaperQA2 agent</p>
+            <h1>Ask your research library.</h1>
+            <p class="welcome-copy">Upload papers, ask a question, and watch an agent search, gather evidence, and write a cited answer.</p>
+            <div class="starter-grid">
+              <button class="starter" data-prompt="What is the main contribution of these papers?">
+                <span class="starter-icon violet">✦</span><span><strong>Find the contribution</strong><small>Identify claims and novelty</small></span><b>↗</b>
+              </button>
+              <button class="starter" data-prompt="Compare the methods, datasets, and results across these papers.">
+                <span class="starter-icon cyan">≋</span><span><strong>Compare papers</strong><small>Methods, datasets, and results</small></span><b>↗</b>
+              </button>
+              <button class="starter" data-prompt="What limitations and open questions do the authors identify?">
+                <span class="starter-icon amber">◇</span><span><strong>Surface limitations</strong><small>Gaps and future work</small></span><b>↗</b>
+              </button>
+            </div>
+          </section>
+          <div id="messages" class="messages" aria-live="polite"></div>
+        </div>
+
+        <div class="composer-wrap">
+          <div class="composer" id="composer">
+            <textarea id="question" rows="1" maxlength="4000" placeholder="Ask a question about your papers…"></textarea>
+            <div class="composer-actions">
+              <div>
+                <button class="composer-button" id="attach-button" title="Add documents">
+                  <svg viewBox="0 0 24 24"><path d="m20.5 11.5-8.3 8.3a6 6 0 0 1-8.5-8.5l9-9a4 4 0 0 1 5.7 5.7l-9 9a2 2 0 1 1-2.8-2.8l8.3-8.3"/></svg>
+                </button>
+                <div class="mode-picker">
+                  <button class="mode-button" id="mode-button" aria-haspopup="menu" aria-expanded="false"><span class="mode-spark">✦</span><span id="mode-label">Auto</span><svg viewBox="0 0 16 16"><path d="m4 6 4 4 4-4"/></svg></button>
+                  <div class="mode-menu" id="mode-menu" role="menu" hidden>
+                    <button role="menuitem" data-mode="auto"><strong>Auto</strong><small>Chat or research automatically</small></button>
+                    <button role="menuitem" data-mode="research"><strong>Research</strong><small>Let the agent choose research tools</small></button>
+                    <button role="menuitem" data-mode="chat"><strong>Chat</strong><small>General conversation without papers</small></button>
+                  </div>
+                </div>
+              </div>
+              <button id="stop-button" class="answer-action" hidden>Stop</button>
+              <button id="send-button" class="send-button" aria-label="Run research agent">
+                <svg viewBox="0 0 24 24"><path d="M12 19V5M6.5 10.5 12 5l5.5 5.5"/></svg>
+              </button>
+            </div>
+          </div>
+          <p class="composer-hint"><span id="library-summary">No papers in library</span><span>Enter to run · Shift Enter for newline</span></p>
+        </div>
+      </main>
+
+      <div class="panel-resizer panel-resizer-right" id="inspector-resizer" role="separator" tabindex="0" aria-label="Resize research context panel" aria-controls="inspector" aria-orientation="vertical" aria-valuemin="260" aria-valuemax="600" aria-valuenow="330" title="Drag to resize · double-click to reset"></div>
+
+      <aside class="inspector" id="inspector">
+        <div class="inspector-header">
+          <div><p class="eyebrow">Research context</p><h2>Library & run</h2></div>
+          <button class="icon-button" id="close-inspector" aria-label="Close inspector"><svg viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17"/></svg></button>
+        </div>
+
+        <div class="inspector-tabs"><button class="active" data-tab="library">Library</button><button data-tab="trace">Agent trace</button><button data-tab="sources">Sources</button></div>
+
+        <div class="tab-panel active" id="tab-library">
+          <div class="dropzone" id="dropzone">
+            <input type="file" id="file-input" multiple accept=".pdf,.txt,.md,.html" hidden />
+            <div class="drop-icon"><svg viewBox="0 0 24 24"><path d="M12 16V4m0 0L7 9m5-5 5 5M5 14v5h14v-5"/></svg></div>
+            <strong>Drop papers here</strong><span>PDF, TXT, MD, or HTML · 50 MB max</span>
+            <button id="browse-button">Browse files</button>
+          </div>
+          <button class="demo-button" id="demo-button"><span>＋</span><span><strong>Add the PaperQA2 demo paper</strong><small>Fetch arXiv:2409.13740</small></span></button>
+          <div class="panel-section-title"><span>Documents</span><span id="document-total">0 files</span></div>
+          <div class="documents" id="documents"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-trace">
+          <p class="inspector-scope" id="trace-scope">No response selected</p>
+          <div class="empty-panel" id="trace-empty"><span>⌁</span><strong>No active run</strong><p>Agent decisions and progress appear here.</p></div>
+          <div class="trace" id="trace"></div>
+        </div>
+
+        <div class="tab-panel" id="tab-sources">
+          <p class="inspector-scope" id="sources-scope">No response selected</p>
+          <div class="empty-panel" id="sources-empty"><span>◫</span><strong>No sources yet</strong><p>Evidence used in the answer appears here.</p></div>
+          <div class="sources" id="sources"></div>
+        </div>
+
+        <div class="settings-resizer" id="settings-resizer" role="separator" tabindex="0" aria-label="Resize run settings" aria-controls="run-settings" aria-orientation="horizontal" aria-valuemin="170" aria-valuemax="520" aria-valuenow="340" title="Drag to resize · double-click to reset"><span aria-hidden="true"></span></div>
+
+        <div class="run-settings" id="run-settings">
+          <div class="panel-section-title"><span>Run settings</span><span class="setting-state">Local</span></div>
+          <label>Language model<select id="model"><option value="cloudflare/@cf/zai-org/glm-4.7-flash">Cloudflare · GLM-4.7-Flash</option></select><small class="setting-help" id="model-help">Cloudflare Workers AI is the agent provider.</small></label>
+          <label>Reasoning effort<select id="reasoning-effort"><option value="low">Low</option><option value="medium" selected>Medium</option><option value="high">High</option></select></label>
+          <label>Embeddings<select id="embedding"><option value="sparse">Sparse · local, fastest</option></select><small class="setting-help" id="embedding-help">No API or model download required.</small></label>
+          <div class="setting-pair"><label>Evidence<input id="evidence-k" type="number" min="1" max="20" value="6" /></label><label>Max sources<input id="max-sources" type="number" min="1" max="10" value="5" /></label></div>
+          <label class="web-fallback"><span><strong>Allow public web</strong><small id="web-search-help">Search public research catalogs and read original sources</small></span><input id="web-search" type="checkbox" checked /></label>
+        </div>
+      </aside>
+    </div>
+
+    <button class="panel-backdrop" id="panel-backdrop" aria-label="Close navigation panels"></button>
+    <div class="toast-region" id="toasts" aria-live="assertive"></div>
+    <script src="/app.js?v=13" defer></script>
+  </body>
+</html>

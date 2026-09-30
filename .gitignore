@@ -1,0 +1,40 @@
+# Secrets and local environments
+.env
+.venv/
+env/
+venv/
+
+# Python/build artifacts
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+**/version.py
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Editors and operating-system metadata
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local application and benchmark state (never source-cleanup targets)
+data/
+.paperqa/
+.test-ui-*/
+.research-verification/
+.agent-stability/
+.deepresearch-bench/
+.litqa-bench/
+.refactor-snapshots/
+.uv-cache/
+
+# Generated documentation and notebooks
+docs/_build/
+site/
+.ipynb_checkpoints/

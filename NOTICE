@@ -1,0 +1,11 @@
+Research Agent
+
+This application includes code adapted from the PaperQA project developed by
+FutureHouse and its contributors.
+
+The original and adapted code is provided under the Apache License, Version
+2.0. See LICENSE for the full license terms.
+
+The application has since been substantially refactored around a focused
+LangChain/LangGraph research agent, local retrieval, conversation memory, a web
+interface, and benchmark tooling.
